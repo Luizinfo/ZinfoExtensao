@@ -3,16 +3,16 @@
   "displayName": "TechLeadTools",
   "description": "Compartilhe trechos de código e navegue até a origem com o protocolo TLT.",
   "version": "0.1.0",
-  "publisher": "zinfo",
+  "publisher": "luizinfo",
   "license": "MIT",
   "icon": "images/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zinfo/TechLeadTools.git"
+    "url": "https://github.com/Luizinfo/ZinfoExtensao.git"
   },
-  "homepage": "https://github.com/zinfo/TechLeadTools#readme",
+  "homepage": "https://github.com/Luizinfo/ZinfoExtensao#readme",
   "bugs": {
-    "url": "https://github.com/zinfo/TechLeadTools/issues"
+    "url": "https://github.com/Luizinfo/ZinfoExtensao/issues"
   },
   "engines": {
     "vscode": "^1.90.0"

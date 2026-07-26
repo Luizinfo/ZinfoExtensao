@@ -2,14 +2,14 @@
 
 ## Identidades permanentes
 
-Antes do primeiro envio, confirme que o publisher corporativo `zinfo` está
+Antes do primeiro envio, confirme que o publisher corporativo `luizinfo` está
 disponível e reserve-o nos dois marketplaces. Depois da primeira publicação,
 não altere:
 
-- VS Code Marketplace: `zinfo.techleadtools`;
+- VS Code Marketplace: `luizinfo.techleadtools`;
 - Visual Studio Marketplace: `TechLeadTools.VisualStudio`.
 
-Se `zinfo` não estiver disponível, substitua o publisher nos manifests e nos
+Se `luizinfo` não estiver disponível, substitua o publisher nos manifests e nos
 workflows antes da versão `1.0.0`. Nunca reutilize a identidade ou uma versão
 já publicada.
 

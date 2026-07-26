@@ -6,10 +6,10 @@
         <Identity Id="TechLeadTools.VisualStudio"
                   Version="0.1.0"
                   Language="pt-BR"
-                  Publisher="Zinfo" />
+                  Publisher="luizinfo" />
         <DisplayName>TechLeadTools</DisplayName>
         <Description xml:space="preserve">Compartilhe trechos de código e navegue até a origem com o protocolo TLT.</Description>
-        <MoreInfo>https://github.com/zinfo/TechLeadTools</MoreInfo>
+        <MoreInfo>https://github.com/Luizinfo/ZinfoExtensao</MoreInfo>
         <License>LICENSE</License>
         <GettingStartedGuide>README.md</GettingStartedGuide>
         <Icon>Resources\icon.png</Icon>
