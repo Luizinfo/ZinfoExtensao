@@ -29,6 +29,14 @@ um quarto componente zero: `X.Y.Z.0`.
 1. Crie o publisher e conceda permissão à identidade de automação.
 2. Crie um aplicativo Microsoft Entra e configure federação OIDC com este
    repositório GitHub e o environment `marketplace-production`.
+   - Em repositórios que usam subjects OIDC imutáveis, copie exatamente o
+     `subject claim` mostrado pelo `azure/login`. Para este repositório:
+     `repo:Luizinfo@16701149/ZinfoExtensao@1312809603:environment:marketplace-production`.
+   - Use o issuer `https://token.actions.githubusercontent.com` e a audience
+     `api://AzureADTokenExchange`.
+   - Se já houver uma credencial com o formato antigo
+     `repo:Luizinfo/ZinfoExtensao:environment:marketplace-production`, exclua-a
+     ou crie outra credencial com o subject imutável acima.
 3. Cadastre `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` e `AZURE_SUBSCRIPTION_ID` como
    variáveis/segredos do environment.
 4. A publicação usa `vsce publish --azure-credential`, sem PAT de longa duração.
@@ -84,4 +92,3 @@ devem ser substituídos.
 - Entra OIDC: https://learn.microsoft.com/entra/workload-id/workload-identity-federation-create-trust
 - Publicação VSIX: https://learn.microsoft.com/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line
 - Assinatura VSIX: https://learn.microsoft.com/visualstudio/extensibility/signing-vsix-packages
-

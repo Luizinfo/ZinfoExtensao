@@ -4,7 +4,7 @@
                  xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="TechLeadTools.VisualStudio"
-                  Version="0.1.0"
+                  Version="0.1.1"
                   Language="pt-BR"
                   Publisher="luizinfo" />
         <DisplayName>TechLeadTools</DisplayName>
@@ -14,7 +14,7 @@
         <GettingStartedGuide>README.md</GettingStartedGuide>
         <Icon>Resources\icon.png</Icon>
         <PreviewImage>Resources\icon.png</PreviewImage>
-        <Tags>code sharing, collaboration, navigation, tech lead, snippet</Tags>
+        <Tags>code sharing;collaboration;navigation;tech lead;snippet</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,19.0)">

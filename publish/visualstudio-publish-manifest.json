@@ -4,14 +4,7 @@
     "coding"
   ],
   "identity": {
-    "internalName": "TechLeadTools.VisualStudio",
-    "tags": [
-      "code sharing",
-      "collaboration",
-      "navigation",
-      "tech lead",
-      "snippet"
-    ]
+    "internalName": "TechLeadTools.VisualStudio"
   },
   "overview": "overview.md",
   "priceCategory": "free",
