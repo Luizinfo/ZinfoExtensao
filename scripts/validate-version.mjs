@@ -32,6 +32,7 @@ const expectedAssemblyVersion = `${packageJson.version}.0`;
 const tagsText = /<Tags>([^<]+)<\/Tags>/.exec(manifest)?.[1] ?? "";
 const tags = tagsText.split(";").map((tag) => tag.trim()).filter(Boolean);
 const publishIdentityKeys = Object.keys(publishManifest.identity ?? {});
+const marketplaceInternalName = publishManifest.identity?.internalName ?? "";
 
 if (manifestVersion !== packageJson.version || assemblyVersion !== expectedAssemblyVersion) {
   console.error(
@@ -54,6 +55,16 @@ if (
 ) {
   console.error(
     "Para um payload VSIX, identity no manifesto de publicação deve conter apenas internalName."
+  );
+  process.exit(1);
+}
+
+if (
+  marketplaceInternalName.length >= 63
+  || !/^[A-Za-z0-9][A-Za-z0-9-]*$/.test(marketplaceInternalName)
+) {
+  console.error(
+    "O internalName do Visual Studio Marketplace deve ter menos de 63 caracteres e usar apenas letras, números e hífen."
   );
   process.exit(1);
 }

@@ -7,7 +7,7 @@ disponível e reserve-o nos dois marketplaces. Depois da primeira publicação,
 não altere:
 
 - VS Code Marketplace: `luizinfo.techleadtools`;
-- Visual Studio Marketplace: `TechLeadTools.VisualStudio`.
+- Visual Studio Marketplace: `TechLeadTools-VisualStudio`.
 
 Se `luizinfo` não estiver disponível, substitua o publisher nos manifests e nos
 workflows antes da versão `1.0.0`. Nunca reutilize a identidade ou uma versão
