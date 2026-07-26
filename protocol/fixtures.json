@@ -1,0 +1,36 @@
+[
+  {
+    "name": "single-line-with-accents",
+    "header": "Serviço.cs:Serviço:7",
+    "workspace": "Aplicação",
+    "path": "src/Serviços/Serviço.cs",
+    "file": "Serviço.cs",
+    "class": "Serviço",
+    "startLine": 7,
+    "endLine": 7,
+    "content": "    public string Olá() => \"ação\";"
+  },
+  {
+    "name": "multi-line-nested-class",
+    "header": "Worker.cs:Outer.Inner:10-12",
+    "workspace": "TechLeadTools",
+    "path": "src/Workers/Worker.cs",
+    "file": "Worker.cs",
+    "class": "Outer.Inner",
+    "startLine": 10,
+    "endLine": 12,
+    "content": "        if (ready)\n        {\n            Run();"
+  },
+  {
+    "name": "global-text-file",
+    "header": "config.yml:Global:2-3",
+    "workspace": "infra",
+    "path": "deploy/config.yml",
+    "file": "config.yml",
+    "class": "Global",
+    "startLine": 2,
+    "endLine": 3,
+    "content": "environment: produção\nreplicas: 2"
+  }
+]
+

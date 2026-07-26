@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/vscode/package-lock.json
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Validar UTF-8 e versões
+        run: |
+          node scripts/check-utf8-no-bom.mjs
+          node scripts/validate-version.mjs
+
+      - name: Testar VS Code
+        working-directory: src/vscode
+        run: |
+          npm ci
+          npm test
+
+      - name: Compilar Visual Studio e gerar VSIX
+        run: msbuild TechLeadTools.sln /restore /p:Configuration=Release /v:minimal
+
+      - name: Testar protocolo .NET
+        run: dotnet run --project tests/TechLeadTools.ProtocolTests --configuration Release --no-build
+
+      - name: Empacotar VS Code
+        working-directory: src/vscode
+        run: npm run package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: techleadtools-vsix
+          if-no-files-found: error
+          path: |
+            src/vscode/techleadtools-*.vsix
+            src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix
+

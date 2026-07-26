@@ -1,0 +1,83 @@
+{
+  "name": "techleadtools",
+  "displayName": "TechLeadTools",
+  "description": "Compartilhe trechos de código e navegue até a origem com o protocolo TLT.",
+  "version": "0.1.0",
+  "publisher": "zinfo",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zinfo/TechLeadTools.git"
+  },
+  "homepage": "https://github.com/zinfo/TechLeadTools#readme",
+  "bugs": {
+    "url": "https://github.com/zinfo/TechLeadTools/issues"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "code sharing",
+    "collaboration",
+    "navigation",
+    "tech lead",
+    "snippet"
+  ],
+  "activationEvents": [
+    "onCommand:techLeadTools.copyWithTLT",
+    "onCommand:techLeadTools.pasteWithTLT"
+  ],
+  "main": "./out/src/extension.js",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "techLeadTools.copyWithTLT",
+        "title": "Copiar com TLT",
+        "category": "TechLeadTools",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "techLeadTools.pasteWithTLT",
+        "title": "Colar com TLT",
+        "category": "TechLeadTools",
+        "icon": "$(go-to-file)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "techLeadTools.copyWithTLT",
+          "group": "9_cutcopypaste@20",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "techLeadTools.pasteWithTLT",
+          "group": "9_cutcopypaste@21",
+          "when": "editorTextFocus"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('out',{recursive:true,force:true})\"",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run clean && npm run compile && node --test out/test/**/*.test.js",
+    "lint": "tsc -p ./ --noEmit",
+    "package": "npm run test && vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.8.0"
+  }
+}

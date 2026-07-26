@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [
+    "coding"
+  ],
+  "identity": {
+    "internalName": "TechLeadTools.VisualStudio",
+    "tags": [
+      "code sharing",
+      "collaboration",
+      "navigation",
+      "tech lead",
+      "snippet"
+    ]
+  },
+  "overview": "README.md",
+  "priceCategory": "free",
+  "publisher": "Zinfo"
+}

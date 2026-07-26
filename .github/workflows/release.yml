@@ -1,0 +1,143 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      publish_marketplaces:
+        description: Publicar nos marketplaces após gerar e validar os artefatos
+        type: boolean
+        default: false
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/vscode/package-lock.json
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Validar fontes e versões
+        run: |
+          node scripts/check-utf8-no-bom.mjs
+          node scripts/validate-version.mjs
+
+      - name: Testar e empacotar VS Code
+        working-directory: src/vscode
+        run: |
+          npm ci
+          npm run package
+
+      - name: Compilar e empacotar Visual Studio
+        run: msbuild TechLeadTools.sln /restore /p:Configuration=Release /v:minimal
+
+      - name: Testar protocolo .NET
+        run: dotnet run --project tests/TechLeadTools.ProtocolTests --configuration Release --no-build
+
+      - name: Calcular hashes
+        shell: pwsh
+        run: |
+          $files = @(
+            (Get-ChildItem src/vscode/techleadtools-*.vsix).FullName,
+            (Resolve-Path src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix).Path
+          )
+          $files | Get-FileHash -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } |
+            Set-Content -Encoding utf8NoBOM SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-vsix
+          if-no-files-found: error
+          path: |
+            src/vscode/techleadtools-*.vsix
+            src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix
+            SHA256SUMS.txt
+
+      - name: Criar GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $codePackage = (Get-ChildItem src/vscode/techleadtools-*.vsix).FullName
+          $visualStudioPackage = (Resolve-Path src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix).Path
+          gh release create $env:GITHUB_REF_NAME `
+            $codePackage `
+            $visualStudioPackage `
+            SHA256SUMS.txt `
+            --verify-tag `
+            --generate-notes `
+            --title "TechLeadTools $env:GITHUB_REF_NAME"
+
+  publish-vscode:
+    if: ${{ inputs.publish_marketplaces == true }}
+    needs: build
+    runs-on: windows-latest
+    environment: marketplace-production
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-vsix
+          path: artifacts
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Publicar no VS Code Marketplace
+        shell: pwsh
+        run: |
+          $package = (Get-ChildItem artifacts/techleadtools-*.vsix).FullName
+          npx --yes @vscode/vsce@3.6.0 publish --packagePath $package --azure-credential
+
+  publish-visualstudio:
+    if: ${{ inputs.publish_marketplaces == true }}
+    needs: build
+    runs-on: windows-latest
+    environment: marketplace-production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-vsix
+          path: artifacts
+
+      - name: Localizar VsixPublisher
+        id: publisher
+        shell: pwsh
+        run: |
+          $tool = Get-ChildItem "${env:ProgramFiles}/Microsoft Visual Studio" -Recurse -Filter VsixPublisher.exe |
+            Select-Object -First 1
+          if (-not $tool) { throw "VsixPublisher.exe não encontrado." }
+          "path=$($tool.FullName)" >> $env:GITHUB_OUTPUT
+
+      - name: Publicar no Visual Studio Marketplace
+        shell: pwsh
+        env:
+          VS_MARKETPLACE_PAT: ${{ secrets.VS_MARKETPLACE_PAT }}
+        run: |
+          $package = (Resolve-Path artifacts/TechLeadTools.VisualStudio.vsix).Path
+          & '${{ steps.publisher.outputs.path }}' publish `
+            -payload $package `
+            -publishManifest publish/visualstudio-publish-manifest.json `
+            -personalAccessToken $env:VS_MARKETPLACE_PAT

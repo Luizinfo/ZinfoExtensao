@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
+    <Extern href="stdidcmd.h" />
+    <Extern href="vsshlids.h" />
+
+    <Commands package="guidTechLeadToolsPackage">
+        <Groups>
+            <Group guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" priority="0x0600">
+                <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+            </Group>
+        </Groups>
+
+        <Buttons>
+            <Button guid="guidTechLeadToolsCommandSet" id="cmdidCopyWithTlt" priority="0x0100" type="Button">
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <Strings>
+                    <ButtonText>Copiar com TLT</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="guidTechLeadToolsCommandSet" id="cmdidPasteWithTlt" priority="0x0200" type="Button">
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <Strings>
+                    <ButtonText>Colar com TLT</ButtonText>
+                </Strings>
+            </Button>
+        </Buttons>
+    </Commands>
+
+    <CommandPlacements>
+        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="cmdidCopyWithTlt" priority="0x0600">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+        </CommandPlacement>
+        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="cmdidPasteWithTlt" priority="0x0601">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+        </CommandPlacement>
+    </CommandPlacements>
+
+    <Symbols>
+        <GuidSymbol name="guidTechLeadToolsPackage" value="{F63364BB-6966-4B27-A02D-5D9CC42D07B4}" />
+        <GuidSymbol name="guidTechLeadToolsCommandSet" value="{671AA08A-B72C-45CD-B513-A418D16214A2}">
+            <IDSymbol name="TechLeadToolsMenuGroup" value="0x1020" />
+            <IDSymbol name="cmdidCopyWithTlt" value="0x0100" />
+            <IDSymbol name="cmdidPasteWithTlt" value="0x0101" />
+        </GuidSymbol>
+    </Symbols>
+</CommandTable>

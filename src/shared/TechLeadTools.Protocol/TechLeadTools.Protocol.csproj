@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <Description>Contrato TLT/1 compartilhado pelas extensões TechLeadTools.</Description>
+    </PropertyGroup>
+</Project>
