@@ -122,7 +122,7 @@ jobs:
           name: release-vsix
           path: artifacts
 
-      - uses: azure/login@v2
+      - uses: azure/login@v3
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
@@ -131,7 +131,12 @@ jobs:
       - name: Publicar no VS Code Marketplace
         shell: pwsh
         run: |
-          $package = (Get-ChildItem artifacts/techleadtools-*.vsix).FullName
+          $packages = @(Get-ChildItem artifacts -Recurse -File -Filter "techleadtools-*.vsix")
+          if ($packages.Count -ne 1) {
+            throw "Esperado um VSIX do VS Code, encontrados: $($packages.Count)."
+          }
+
+          $package = $packages[0].FullName
           npx --yes @vscode/vsce@3.6.0 publish --packagePath $package --azure-credential
 
   publish-visualstudio:
@@ -164,7 +169,12 @@ jobs:
         env:
           VS_MARKETPLACE_PAT: ${{ secrets.VS_MARKETPLACE_PAT }}
         run: |
-          $package = (Resolve-Path artifacts/TechLeadTools.VisualStudio.vsix).Path
+          $packages = @(Get-ChildItem artifacts -Recurse -File -Filter "TechLeadTools.VisualStudio.vsix")
+          if ($packages.Count -ne 1) {
+            throw "Esperado um VSIX do Visual Studio, encontrados: $($packages.Count)."
+          }
+
+          $package = $packages[0].FullName
           & '${{ steps.publisher.outputs.path }}' publish `
             -payload $package `
             -publishManifest publish/visualstudio-publish-manifest.json `
