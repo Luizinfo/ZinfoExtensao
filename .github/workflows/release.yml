@@ -6,6 +6,11 @@ on:
       - "v*.*.*"
   workflow_dispatch:
     inputs:
+      release_tag:
+        description: Tag existente a criar ou atualizar, por exemplo v0.1.0
+        type: string
+        default: ""
+        required: false
       publish_marketplaces:
         description: Publicar nos marketplaces após gerar e validar os artefatos
         type: boolean
@@ -69,20 +74,39 @@ jobs:
             SHA256SUMS.txt
 
       - name: Criar GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || inputs.release_tag != ''
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
         run: |
+          $tag = $env:RELEASE_TAG
+          $packageVersion = (Get-Content src/vscode/package.json -Raw -Encoding UTF8 | ConvertFrom-Json).version
+          if ($tag -ne "v$packageVersion") {
+            throw "A tag $tag não corresponde à versão $packageVersion dos pacotes."
+          }
+
           $codePackage = (Get-ChildItem src/vscode/techleadtools-*.vsix).FullName
           $visualStudioPackage = (Resolve-Path src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix).Path
-          gh release create $env:GITHUB_REF_NAME `
-            $codePackage `
-            $visualStudioPackage `
-            SHA256SUMS.txt `
-            --verify-tag `
-            --generate-notes `
-            --title "TechLeadTools $env:GITHUB_REF_NAME"
+          $assets = @($codePackage, $visualStudioPackage, "SHA256SUMS.txt")
+
+          gh release view $tag *> $null
+          $releaseExists = $LASTEXITCODE -eq 0
+
+          if ($releaseExists) {
+            Write-Host "O release $tag já existe; atualizando os artefatos."
+            gh release upload $tag $assets --clobber
+          } else {
+            gh release create $tag `
+              $assets `
+              --verify-tag `
+              --generate-notes `
+              --title "TechLeadTools $tag"
+          }
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Não foi possível criar ou atualizar o GitHub Release $tag."
+          }
 
   publish-vscode:
     if: ${{ inputs.publish_marketplaces == true }}
