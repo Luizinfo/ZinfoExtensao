@@ -26,6 +26,13 @@ const packageSource = fs.readFileSync(
   ),
   "utf8"
 );
+const commandTable = fs.readFileSync(
+  path.join(
+    root,
+    "src/visualstudio/TechLeadTools.VisualStudio/TechLeadTools.vsct"
+  ),
+  "utf8"
+);
 const publishManifest = JSON.parse(
   fs.readFileSync(
     path.join(root, "publish/visualstudio-publish-manifest.json"),
@@ -80,6 +87,21 @@ if (
 ) {
   console.error(
     "O internalName do Visual Studio Marketplace deve ter menos de 63 caracteres e usar apenas letras, números e hífen."
+  );
+  process.exit(1);
+}
+
+const hasContextMenuHierarchy =
+  /<Group[^>]+id="TechLeadToolsContextRootGroup"[\s\S]*?<Parent[^>]+id="IDM_VS_CTXT_CODEWIN"/
+    .test(commandTable)
+  && /<Menu[^>]+id="TechLeadToolsContextMenu"[^>]+type="Menu"[\s\S]*?<Parent[^>]+id="TechLeadToolsContextRootGroup"/
+    .test(commandTable)
+  && /<Group[^>]+id="TechLeadToolsCommandGroup"[\s\S]*?<Parent[^>]+id="TechLeadToolsContextMenu"/
+    .test(commandTable);
+
+if (!hasContextMenuHierarchy) {
+  console.error(
+    "A tabela de comandos não contém a hierarquia esperada para o submenu contextual."
   );
   process.exit(1);
 }

@@ -4,21 +4,35 @@
     <Extern href="vsshlids.h" />
 
     <Commands package="guidTechLeadToolsPackage">
+        <Menus>
+            <Menu guid="guidTechLeadToolsCommandSet" id="TechLeadToolsContextMenu" priority="0x0100" type="Menu">
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsContextRootGroup" />
+                <CommandFlag>AlwaysCreate</CommandFlag>
+                <Strings>
+                    <ButtonText>TechLeadTools</ButtonText>
+                    <CommandName>TechLeadTools</CommandName>
+                </Strings>
+            </Menu>
+        </Menus>
+
         <Groups>
-            <Group guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" priority="0x0600">
-                <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+            <Group guid="guidTechLeadToolsCommandSet" id="TechLeadToolsContextRootGroup" priority="0x0600">
+                <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+            </Group>
+            <Group guid="guidTechLeadToolsCommandSet" id="TechLeadToolsCommandGroup" priority="0x0100">
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsContextMenu" />
             </Group>
         </Groups>
 
         <Buttons>
             <Button guid="guidTechLeadToolsCommandSet" id="cmdidCopyWithTlt" priority="0x0100" type="Button">
-                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsCommandGroup" />
                 <Strings>
                     <ButtonText>Copiar com TLT</ButtonText>
                 </Strings>
             </Button>
             <Button guid="guidTechLeadToolsCommandSet" id="cmdidPasteWithTlt" priority="0x0200" type="Button">
-                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
+                <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsCommandGroup" />
                 <Strings>
                     <ButtonText>Colar com TLT</ButtonText>
                 </Strings>
@@ -26,16 +40,12 @@
         </Buttons>
     </Commands>
 
-    <CommandPlacements>
-        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" priority="0x0600">
-            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
-        </CommandPlacement>
-    </CommandPlacements>
-
     <Symbols>
         <GuidSymbol name="guidTechLeadToolsPackage" value="{F63364BB-6966-4B27-A02D-5D9CC42D07B4}" />
         <GuidSymbol name="guidTechLeadToolsCommandSet" value="{671AA08A-B72C-45CD-B513-A418D16214A2}">
-            <IDSymbol name="TechLeadToolsMenuGroup" value="0x1020" />
+            <IDSymbol name="TechLeadToolsContextRootGroup" value="0x1020" />
+            <IDSymbol name="TechLeadToolsCommandGroup" value="0x1030" />
+            <IDSymbol name="TechLeadToolsContextMenu" value="0x1040" />
             <IDSymbol name="cmdidCopyWithTlt" value="0x0100" />
             <IDSymbol name="cmdidPasteWithTlt" value="0x0101" />
         </GuidSymbol>

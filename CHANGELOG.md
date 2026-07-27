@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Adiciona o submenu **TechLeadTools** diretamente ao menu contextual do editor.
+- Organiza os comandos na hierarquia canônica de menus do Visual Studio.
+
 ## 0.1.2
 
 - Corrige a exibição dos comandos TLT no menu contextual do editor do Visual Studio.
