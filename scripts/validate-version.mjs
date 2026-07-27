@@ -19,6 +19,13 @@ const assemblyInfo = fs.readFileSync(
   ),
   "utf8"
 );
+const packageSource = fs.readFileSync(
+  path.join(
+    root,
+    "src/visualstudio/TechLeadTools.VisualStudio/TechLeadToolsPackage.cs"
+  ),
+  "utf8"
+);
 const publishManifest = JSON.parse(
   fs.readFileSync(
     path.join(root, "publish/visualstudio-publish-manifest.json"),
@@ -28,16 +35,24 @@ const publishManifest = JSON.parse(
 
 const manifestVersion = /<Identity[^>]*Version="([^"]+)"/s.exec(manifest)?.[1];
 const assemblyVersion = /AssemblyVersion\("([^"]+)"\)/.exec(assemblyInfo)?.[1];
+const installedProductVersion =
+  /InstalledProductRegistration\(\s*"[^"]+",\s*"[^"]+",\s*"([^"]+)"\s*\)/s
+    .exec(packageSource)?.[1];
 const expectedAssemblyVersion = `${packageJson.version}.0`;
 const tagsText = /<Tags>([^<]+)<\/Tags>/.exec(manifest)?.[1] ?? "";
 const tags = tagsText.split(";").map((tag) => tag.trim()).filter(Boolean);
 const publishIdentityKeys = Object.keys(publishManifest.identity ?? {});
 const marketplaceInternalName = publishManifest.identity?.internalName ?? "";
 
-if (manifestVersion !== packageJson.version || assemblyVersion !== expectedAssemblyVersion) {
+if (
+  manifestVersion !== packageJson.version
+  || assemblyVersion !== expectedAssemblyVersion
+  || installedProductVersion !== packageJson.version
+) {
   console.error(
     `Versões divergentes: VS Code=${packageJson.version}, `
-      + `VS=${manifestVersion}, assembly=${assemblyVersion}.`
+      + `VS=${manifestVersion}, assembly=${assemblyVersion}, `
+      + `produto instalado=${installedProductVersion}.`
   );
   process.exit(1);
 }

@@ -13,14 +13,12 @@
         <Buttons>
             <Button guid="guidTechLeadToolsCommandSet" id="cmdidCopyWithTlt" priority="0x0100" type="Button">
                 <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
-                <CommandFlag>DynamicVisibility</CommandFlag>
                 <Strings>
                     <ButtonText>Copiar com TLT</ButtonText>
                 </Strings>
             </Button>
             <Button guid="guidTechLeadToolsCommandSet" id="cmdidPasteWithTlt" priority="0x0200" type="Button">
                 <Parent guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" />
-                <CommandFlag>DynamicVisibility</CommandFlag>
                 <Strings>
                     <ButtonText>Colar com TLT</ButtonText>
                 </Strings>
@@ -29,10 +27,7 @@
     </Commands>
 
     <CommandPlacements>
-        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="cmdidCopyWithTlt" priority="0x0600">
-            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
-        </CommandPlacement>
-        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="cmdidPasteWithTlt" priority="0x0601">
+        <CommandPlacement guid="guidTechLeadToolsCommandSet" id="TechLeadToolsMenuGroup" priority="0x0600">
             <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
         </CommandPlacement>
     </CommandPlacements>

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Corrige a exibição dos comandos TLT no menu contextual do editor do Visual Studio.
+- Mantém os comandos disponíveis também no menu **Ferramentas**.
+
 ## 0.1.1
 
 - Corrige a separação das tags no manifesto VSIX do Visual Studio.

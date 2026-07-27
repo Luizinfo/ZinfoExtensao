@@ -10,7 +10,7 @@ namespace TechLeadTools.VisualStudio
     [InstalledProductRegistration(
         "TechLeadTools",
         "Compartilhe trechos de código e navegue até a origem com o protocolo TLT.",
-        "0.1.0")]
+        "0.1.2")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuidString)]
     public sealed class TechLeadToolsPackage : AsyncPackage
@@ -26,4 +26,3 @@ namespace TechLeadTools.VisualStudio
         }
     }
 }
-
