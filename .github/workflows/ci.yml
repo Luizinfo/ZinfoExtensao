@@ -37,6 +37,12 @@ jobs:
       - name: Compilar Visual Studio e gerar VSIX
         run: msbuild TechLeadTools.sln /restore /p:Configuration=Release /v:minimal
 
+      - name: Validar registro do VSPackage no VSIX
+        shell: pwsh
+        run: |
+          ./scripts/validate-visualstudio-vsix.ps1 `
+            -VsixPath src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix
+
       - name: Testar protocolo .NET
         run: dotnet run --project tests/TechLeadTools.ProtocolTests --configuration Release --no-build
 
@@ -51,4 +57,3 @@ jobs:
           path: |
             src/vscode/techleadtools-*.vsix
             src/visualstudio/TechLeadTools.VisualStudio/bin/Release/TechLeadTools.VisualStudio.vsix
-

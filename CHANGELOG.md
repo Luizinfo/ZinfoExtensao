@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4
+
+- Registra o VSPackage por `CodeBase` para carregamento a partir do diretório
+  privado da extensão.
+- Valida o `.pkgdef` efetivamente empacotado no VSIX durante o CI e a release.
+
 ## 0.1.3
 
 - Adiciona o submenu **TechLeadTools** diretamente ao menu contextual do editor.

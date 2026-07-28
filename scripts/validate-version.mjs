@@ -33,6 +33,13 @@ const commandTable = fs.readFileSync(
   ),
   "utf8"
 );
+const visualStudioProject = fs.readFileSync(
+  path.join(
+    root,
+    "src/visualstudio/TechLeadTools.VisualStudio/TechLeadTools.VisualStudio.csproj"
+  ),
+  "utf8"
+);
 const publishManifest = JSON.parse(
   fs.readFileSync(
     path.join(root, "publish/visualstudio-publish-manifest.json"),
@@ -102,6 +109,13 @@ const hasContextMenuHierarchy =
 if (!hasContextMenuHierarchy) {
   console.error(
     "A tabela de comandos não contém a hierarquia esperada para o submenu contextual."
+  );
+  process.exit(1);
+}
+
+if (!/<UseCodebase>true<\/UseCodebase>/.test(visualStudioProject)) {
+  console.error(
+    "O projeto do Visual Studio deve gerar o pkgdef com registro por CodeBase."
   );
   process.exit(1);
 }

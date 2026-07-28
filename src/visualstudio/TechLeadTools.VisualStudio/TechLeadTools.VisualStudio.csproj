@@ -24,6 +24,7 @@
         <Nullable>enable</Nullable>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <GeneratePkgDefFile>true</GeneratePkgDefFile>
+        <UseCodebase>true</UseCodebase>
         <CreateVsixContainer>true</CreateVsixContainer>
         <DeployExtension>false</DeployExtension>
         <VsixType>v3</VsixType>
